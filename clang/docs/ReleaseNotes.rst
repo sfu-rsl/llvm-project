@@ -72,6 +72,9 @@ New Compiler Flags
 - ``-Wreserved-identifier`` emits warning when user code uses reserved
   identifiers.
 
+- ``Wunused-but-set-parameter`` and ``-Wunused-but-set-variable`` emit warnings
+  when a parameter or a variable is set but not used.
+
 - ``-fstack-usage`` generates an extra .su file per input source file. The .su
   file contains frame size information for each function defined in the source
   file.
@@ -242,6 +245,7 @@ OpenMP Support in Clang
   other OpenMP loop associated constructs as in
 
   .. code-block:: c
+
     #pragma omp parallel for
     #pragma omp unroll partial(4)
     for (int i = 0; i < n; ++i)
@@ -250,6 +254,7 @@ OpenMP Support in Clang
   user-defined tile size.
 
   .. code-block:: c
+
     #pragma omp tile sizes(8,8)
     for (int i = 0; i < m; ++i)
       for (int j = 0; j < n; ++j)
