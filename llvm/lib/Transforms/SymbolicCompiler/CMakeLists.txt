@@ -5,4 +5,7 @@ add_llvm_library(SymbolicCompiler MODULE
   Pass.cpp
   Runtime.cpp
   Symbolizer.cpp
+
+  DEPENDS
+  intrinsics_gen
   )
