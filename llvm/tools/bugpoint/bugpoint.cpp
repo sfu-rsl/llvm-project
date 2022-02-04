@@ -157,6 +157,7 @@ int main(int argc, char **argv) {
   initializeAggressiveInstCombine(Registry);
   initializeInstrumentation(Registry);
   initializeTarget(Registry);
+  initializeSymbolicCompiler(Registry);
 
   if (std::getenv("bar") == (char*) -1) {
     InitializeAllTargets();

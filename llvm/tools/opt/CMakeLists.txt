@@ -18,6 +18,7 @@ set(LLVM_LINK_COMPONENTS
   Remarks
   ScalarOpts
   Support
+  SymbolicCompiler
   Target
   TransformUtils
   Vectorize

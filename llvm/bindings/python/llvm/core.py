@@ -485,6 +485,9 @@ def register_library(library):
     library.LLVMInitializeTarget.argtypes = [PassRegistry]
     library.LLVMInitializeTarget.restype = None
 
+    library.LLVMInitializeSymbolicCompiler.argtypes = [PassRegistry]
+    library.LLVMInitializeSymbolicCompiler.restype = None
+
     library.LLVMShutdown.argtypes = []
     library.LLVMShutdown.restype = None
 
@@ -634,6 +637,7 @@ def initialize_llvm():
     lib.LLVMInitializeAnalysis(p)
     lib.LLVMInitializeCodeGen(p)
     lib.LLVMInitializeTarget(p)
+    lib.LLVMInitializeSymbolicCompiler(p)
 
 register_library(lib)
 Enums = register_enumerations()

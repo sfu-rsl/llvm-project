@@ -42,6 +42,7 @@
 #include "llvm-c/Transforms/IPO.h"
 #include "llvm-c/Transforms/PassManagerBuilder.h"
 #include "llvm-c/Transforms/Scalar.h"
+#include "llvm-c/Transforms/SymbolicCompiler.h"
 #include "llvm-c/Transforms/Utils.h"
 #include "llvm-c/Transforms/Vectorize.h"
 #include "llvm-c/Types.h"
