@@ -1,1 +1,0 @@
-../../../../symcc/compiler/Main.cpp
