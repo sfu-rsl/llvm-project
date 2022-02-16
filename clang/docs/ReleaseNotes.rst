@@ -18,7 +18,7 @@ Written by the `LLVM Team <https://llvm.org/>`_
 Introduction
 ============
 
-This document contains the release notes for the Clang C/C++/Objective-C
+This document contains the release notes for the Clang C/C++/Objective-C/OpenCL
 frontend, part of the LLVM Compiler Infrastructure, release |release|. Here we
 describe the status of Clang in some detail, including major
 improvements from the previous release and new feature work. For the
@@ -47,6 +47,10 @@ sections with improvements to Clang's support for those languages.
 Major New Features
 ------------------
 
+- Added SPIR-V triple and binary generation using external ``llvm-spirv`` tool.
+  For more details refer to :ref:`the SPIR-V support section <spir-v>`.
+- Completed support of OpenCL C 3.0 and C++ for OpenCL 2021 at experimental
+  state.
 -  ...
 
 Improvements to Clang's diagnostics
@@ -81,6 +85,12 @@ New Compiler Flags
 - The ``-mno-bti-at-return-twice`` flag will make sure a BTI instruction won't
   be added after a setjmp or possible other return-twice construct (ARM backend
   only).
+- The ``--start-no-unused-arguments`` and ``--end-no-unused-arguments`` flags
+  allow silencing warnings about unused arguments for only a subset of
+  the command line arguments, keeping potential warnings for other arguments
+  outside of such a region.
+- ``-falign-loops=N`` (N is a power of 2) is now supported for non-LTO cases.
+  (`D106701 <https://reviews.llvm.org/D106701>`_)
 
 Deprecated Compiler Flags
 -------------------------
@@ -112,9 +122,14 @@ Modified Compiler Flags
   - Armv9.1-A (``armv9.1-a``).
   - Armv9.2-A (``armv9.2-a``).
 
+- ``-r`` now implies ``-nostdlib`` for many toolchains, matching GCC.
+  (`D116843 <https://reviews.llvm.org/D116843>`_)
+
 Removed Compiler Flags
 -------------------------
 
+- The legacy ``-gz=zlib-gnu`` and ``-Wa,--compress-debug-sections=zlib-gnu``
+  have been removed.
 - ``-fno-experimental-new-pass-manager`` has been removed.
   ``-flegacy-pass-manager`` can be used as a makeshift,
   Using the legacy pass manager for the optimization pipeline was deprecated in
@@ -163,6 +178,16 @@ Windows Support
   currently supported.
 
 - Support for on-demand initialization of TLS variables was added.
+
+- Improved code generation for ARM, by assuming less strict alignment
+  requirements for instructions (just like other OSes do).
+
+- Fixed using the ``-m32`` flag in x86_64 MinGW setups, by e.g. making ``-m32``
+  pick i686 instead of i386, if there is no i386 sysroot, but only one for
+  i686.
+
+- Fixed passing the ``--no-demangle`` option through to the linker for MinGW
+  targets.
 
 C Language Changes in Clang
 ---------------------------
@@ -239,10 +264,37 @@ CUDA Language Changes in Clang
 Objective-C Language Changes in Clang
 -------------------------------------
 
-OpenCL C Language Changes in Clang
-----------------------------------
+OpenCL Kernel Language Changes in Clang
+---------------------------------------
 
-...
+OpenCL 3.0 is completed, but remains experimental:
+
+- Added parsing support for optionality of device-side enqueue and blocks.
+- Added missing support for optionality of various builtin functions:
+
+  - ``read_write`` images, pipes, collective workgroup in the default header.
+  - ``read_write`` images, named address space atomics in internal ``opencl-c.h``
+    (enabled via ``-finclude-default-header`` frontend flag).
+
+C++ for OpenCL:
+
+- Added experimental support of C++ for OpenCL 2021 as per `the provisional
+  language documentation
+  <https://github.com/KhronosGroup/OpenCL-Docs/releases/tag/cxxforopencl-docrev2021.12>`_.
+  Support of all optional features is aligned with OpenCL 3.0.
+- Added ``__remove_address_space`` utility (documentation available in
+  :doc:`LanguageExtensions`).
+- Fixed address space for temporaries (to be ``__private``).
+- Disallowed static kernel functions.
+- Fixed implicit definition of ``__cpp_threadsafe_static_init`` macro.
+
+Misc changes:
+
+- Added generation of SPIR-V binaries via external ``llvm-spirv`` tool.
+  For more details refer to :ref:`the SPIR-V support section <spir-v>`.
+- Added new extensions for ``atomic_half`` and ``cl_ext_float_atomics``.
+- Fixed/improved support of ``vload``/``vstore``.
+- Fixed incorrect ``as_type`` support for 3-element vector types.
 
 ABI Changes in Clang
 --------------------
@@ -302,6 +354,17 @@ Arm and AArch64 Support in Clang
 
 - The ``attribute((target("branch-protection=...)))`` attributes will now also
   work for the ARM backend.
+
+SPIR-V Support in Clang
+-----------------------
+
+- Added triple/target ``spirv32`` and ``spirv64`` for 32-bit and 64-bit SPIR-V
+  respectively.
+- Added generation of binaries via external ``llvm-spirv`` tool. This can now
+  be used for HIP or OpenCL.
+- Added linking of separate object files in SPIR-V format using external
+  ``spirv-link`` tool.
+
 
 Floating Point Support in Clang
 -------------------------------
