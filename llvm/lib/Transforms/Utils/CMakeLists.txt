@@ -74,6 +74,9 @@ add_llvm_component_library(LLVMTransformUtils
   SizeOpts.cpp
   SplitModule.cpp
   StripNonLineTableDebugInfo.cpp
+  SymbolicCompilerPass.cpp
+  SymbolicCompilerRuntime.cpp
+  SymbolicCompilerSymbolizer.cpp
   SymbolRewriter.cpp
   UnifyFunctionExitNodes.cpp
   UnifyLoopExits.cpp
