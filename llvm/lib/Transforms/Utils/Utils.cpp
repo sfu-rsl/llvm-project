@@ -38,6 +38,7 @@ void llvm::initializeTransformUtils(PassRegistry &Registry) {
   initializeNameAnonGlobalLegacyPassPass(Registry);
   initializePromoteLegacyPassPass(Registry);
   initializeStripNonLineTableDebugLegacyPassPass(Registry);
+  initializeSymbolizeLegacyPassPass(Registry);
   initializeUnifyFunctionExitNodesLegacyPassPass(Registry);
   initializeMetaRenamerPass(Registry);
   initializeStripGCRelocatesLegacyPass(Registry);
